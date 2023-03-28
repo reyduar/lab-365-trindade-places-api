@@ -4,7 +4,7 @@ O projeto Trindade Places é uma iniciativa importante da prefeitura de Trindade
 
 ### 
 
-- DEMO: 
+- DEMO: https://trindade-places-api.cyclic.app
 
 ### Setup
 

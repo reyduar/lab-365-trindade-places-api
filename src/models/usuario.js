@@ -1,4 +1,5 @@
-const { Schema, model } = require("mongoose");
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../database/config.db");
 /**
  * @openapi
  * components:
@@ -12,31 +13,39 @@ const { Schema, model } = require("mongoose");
  *        nome:
  *          type: string
  *          default: Nikola Tesla
- *        idade:
- *          type: number
- *          default: 52
- *        cargo:
+ *        email:
  *          type: string
- *          default: Lider
+ *          default: tesla@tesla.com
  *        senha:
  *          type: string
  *          default: 12345678
  */
-const UsuarioSchema = Schema({
-  nome: {
-    type: String,
+const Usuario = sequelize.define(
+  "usuarios",
+  {
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    nome: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    senha: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: false,
+    },
   },
-  idade: {
-    type: Number,
-  },
-  cargo: {
-    type: String,
-  },
-  senha: {
-    type: String,
-  },
-});
+  { timestamps: false }
+);
 
 module.exports = {
-  Usuario: model("Usuario", UsuarioSchema),
+  Usuario,
 };

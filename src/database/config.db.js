@@ -1,15 +1,18 @@
-const mongoose = require("mongoose");
+require("dotenv").config();
+const { Sequelize } = require("sequelize");
 
-const dbConnection = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB, {});
+const { DB_HOST, DB_NAME, DB_USER, DB_PASS } = process.env;
 
-    console.log("Connected to MongoBD");
-  } catch (error) {
-    console.log(`Couldn't connect to Mongo database ${error}`);
-  }
-};
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
+  host: DB_HOST,
+  dialect: "postgres",
+});
 
 module.exports = {
-  dbConnection,
+  sequelize,
 };
+
+// Sincroniza la base de datos
+sequelize.sync().then(() => {
+  console.log("Banco de dados sincronizado..");
+});
