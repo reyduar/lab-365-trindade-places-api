@@ -1,12 +1,12 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { eUsuarioLider } = require("../middlewares/validar-novo-usuario");
 const { usuarioIdExiste } = require("../middlewares/validar-id-usuario");
 const {
-  getUsers,
-  newUser,
-  updateUser,
-  deleteUser,
+  getUsuarios,
+  getUsuario,
+  createUsuario,
+  updateUsuario,
+  deleteUsuario,
 } = require("../controllers/usuario.controller");
 
 const router = new Router();
@@ -29,8 +29,35 @@ const router = new Router();
  *      200:
  *        description: OK
  */
-router.get("/", getUsers);
+router.get("/", getUsuarios);
 
+/**
+ * @openapi
+ * /api/usuarios/{id}:
+ *  get:
+ *    tags:
+ *        - Usuario
+ *    summary: obtener usuário por id
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        description: Usuario Id
+ *        schema:
+ *           type: integer
+ *           default: 1
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/CriarUsuarioInput'
+ *    responses:
+ *      200:
+ *        description: Usuário atualizado com sucesso
+ *      406:
+ *        description: Está faltando dados para concluir a operação
+ */
+router.get("/:id", getUsuario);
 /**
  * @openapi
  * /api/usuarios/:
@@ -50,15 +77,7 @@ router.get("/", getUsers);
  *      406:
  *        description: Está faltando dados para concluir a operação
  */
-router.post(
-  "/",
-  [
-    eUsuarioLider,
-    check("nome").isLength({ min: 4 }),
-    check("senha").isLength({ min: 4 }),
-  ],
-  newUser
-);
+router.post("/", createUsuario);
 
 /**
  * @openapi
@@ -70,10 +89,10 @@ router.post(
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Usuario Mongo Id Object
+ *        description: Usuario Id
  *        schema:
- *           type: string
- *           default: 640be68a33e01cdf3f66f74e
+ *           type: integer
+ *           default: 1
  *    requestBody:
  *      required: true
  *      content:
@@ -86,14 +105,7 @@ router.post(
  *      406:
  *        description: Está faltando dados para concluir a operação
  */
-router.put(
-  "/:id",
-  [
-    check("id", "MongoId invalido").isMongoId(),
-    check("id").custom(usuarioIdExiste),
-  ],
-  updateUser
-);
+router.put("/:id", updateUsuario);
 
 /**
  * @openapi
@@ -105,23 +117,16 @@ router.put(
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Usuario Mongo Id Object
+ *        description: Usuario Id
  *        schema:
- *           type: string
- *           default: 640be68a33e01cdf3f66f74e
+ *           type: integer
+ *           default: 1
  *    responses:
  *      200:
  *        description: Usuário deletado com sucesso
  *      406:
  *        description: Está faltando dados para concluir a operação
  */
-router.delete(
-  "/:id",
-  [
-    check("id", "MongoId invalido").isMongoId(),
-    check("id").custom(usuarioIdExiste),
-  ],
-  deleteUser
-);
+router.delete("/:id", deleteUsuario);
 
 module.exports = router;

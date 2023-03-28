@@ -1,15 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-const { dbConnection } = require("../database/config.db");
+const { sequelize } = require("../database/config.db");
 const { swaggerDocs } = require("../utils/swagger");
-const testRoute = require("../routes/test.route");
 const usuarioRoute = require("../routes/usuario.route");
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT || 3333;
-    this.testRoutePath = "/api/test";
     this.usuarioRoutePath = "/api/usuarios";
 
     // Middlewares
@@ -17,11 +15,16 @@ class Server {
     // App Routes
     this.routes();
     // Database connection
-    this.mongodbConnection();
+    this.dbConnection();
   }
 
-  async mongodbConnection() {
-    await dbConnection();
+  async dbConnection() {
+    try {
+      await sequelize.authenticate();
+      console.log("Connection success");
+    } catch (error) {
+      throw new Error("Error connection");
+    }
   }
 
   middlewares() {
@@ -35,7 +38,6 @@ class Server {
     this.app.use(express.static("public"));
   }
   routes() {
-    this.app.use(`${this.testRoutePath}`, testRoute);
     this.app.use(`${this.usuarioRoutePath}`, usuarioRoute);
   }
 

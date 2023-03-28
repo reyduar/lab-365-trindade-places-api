@@ -1,72 +1,109 @@
 const { request, response } = require("express");
-const { validationResult } = require("express-validator");
 const { Usuario } = require("../models/usuario");
 
-const getUsers = async (req = request, res = response) => {
-  const { limit = 5, skip = 0 } = req.query;
-
-  const [total, usuarios] = await Promise.all([
-    Usuario.countDocuments(),
-    Usuario.find().skip(Number(skip)).limit(Number(limit)),
-  ]);
-  res.json({
-    usuarios,
-    total,
-  });
-};
-
-const newUser = async (req = request, res = response) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(406).json({
-      message: "Está faltando dados para concluir a operação",
-      errors,
+const getUsuarios = async (req = request, res = response) => {
+  try {
+    const usuarios = await Usuario.findAll({
+      // where: {
+      //   age: { [Op.gte]: 18 } // exemplo pra fazer where
+      // },
+      order: [["id", "DESC"]],
+    });
+    if (usuarios) {
+      res.status(200).json({
+        usuarios,
+      });
+    } else {
+      res.status(404).json({ mensaje: "Usuários não encontrados" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error ao procurar usuários",
+      error,
     });
   }
-  const { nome, idade, cargo, senha } = req.body;
-
-  const usuario = new Usuario({ nome, idade, cargo, senha });
-  await usuario.save();
-  res.status(201).json({
-    message: "Usuário criado com sucesso",
-    usuario,
-  });
 };
 
-const deleteUser = async (req = request, res = response) => {
+const getUsuario = async (req = Request, res = Response) => {
   const { id } = req.params;
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(406).json({
-      message: "Está faltando dados para concluir a operação",
-      errors,
+  try {
+    const usuario = await Usuario.findByPk(id);
+    if (usuario) {
+      res.status(201).json({
+        message: "Usuário encontrado com sucesso",
+        usuario,
+      });
+    } else {
+      res.status(404).json({ mensaje: "usuário não encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error ao atualizar usuário",
+      error,
     });
   }
-
-  await Usuario.findByIdAndDelete(id);
-  res.status(200).json({
-    message: "Usuário deletado com sucesso",
-  });
 };
-const updateUser = async (req = request, res = response) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(406).json({
-      message: "Está faltando dados para concluir a operação",
-      errors,
+
+const createUsuario = async (req = Request, res = Response) => {
+  const { nome, email, senha } = req.body;
+  try {
+    const usuarioCreated = await Usuario.create({ nome, email, senha });
+    res
+      .status(201)
+      .json({ message: "Usuário criado com sucesso", usuario: usuarioCreated });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error ao criar usuario",
+      error,
     });
   }
+};
+
+const updateUsuario = async (req = Request, res = Response) => {
   const { id } = req.params;
-  const { ...rest } = req.body;
-  await Usuario.findByIdAndUpdate(id, rest);
-  res.status(200).json({
-    message: `Usuário atualizado com sucesso`,
-  });
+  const { nome, email, senha } = req.body;
+  try {
+    const usuarioUpdated = await Usuario.findByPk(id);
+    if (usuarioUpdated) {
+      await Usuario.update({ nome, email, senha }, { where: { id } });
+      res.status(201).json({
+        message: "Usuário atualizado com sucesso",
+        usuario: usuarioUpdated,
+      });
+    } else {
+      res.status(404).json({ mensaje: "usuário não encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error ao atualizar usuário",
+      error,
+    });
+  }
+};
+
+const deleteUsuario = async (req = Request, res = Response) => {
+  const { id } = req.params;
+  try {
+    const usuarioDeleted = await Usuario.destroy({ where: { id } });
+    if (usuarioDeleted) {
+      res.status(201).json({
+        message: "Usuário deletado com sucesso",
+      });
+    } else {
+      res.status(404).json({ mensaje: "usuário não encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error ao deletar usuário",
+      error,
+    });
+  }
 };
 
 module.exports = {
-  getUsers,
-  newUser,
-  deleteUser,
-  updateUser,
+  getUsuarios,
+  getUsuario,
+  createUsuario,
+  updateUsuario,
+  deleteUsuario,
 };
