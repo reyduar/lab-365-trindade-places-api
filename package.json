@@ -1,0 +1,32 @@
+{
+  "name": "lab-365-trinidade-places-api",
+  "version": "1.0.0",
+  "description": "Trinidade places e uma REST full API feita para o curso full-stack dev de lab-365",
+  "author": "Reynaldo Ariel Duarte",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "start:dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com/reyduar/lab-365-fullstack-node-api.git"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-validator": "^6.15.0",
+    "mongoose": "^7.0.1",
+    "nodemon": "^2.0.21",
+    "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.30.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2"
+  }
+}
