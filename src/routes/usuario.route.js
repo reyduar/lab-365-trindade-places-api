@@ -18,13 +18,6 @@ const router = new Router();
  *    summary: Obter usuários
  *    tags:
  *        - Usuario
- *    parameters:
- *       - in: query
- *         name: limit
- *         schema:
- *           type: number
- *           default: 20
- *           description: limite de usuários para obter
  *    responses:
  *      200:
  *        description: OK
@@ -45,12 +38,6 @@ router.get("/", getUsuarios);
  *        schema:
  *           type: integer
  *           default: 1
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/CriarUsuarioInput'
  *    responses:
  *      200:
  *        description: Usuário atualizado com sucesso
