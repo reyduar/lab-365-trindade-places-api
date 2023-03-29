@@ -1,80 +1,80 @@
 const { Router } = require("express");
 const {
-  getUsuarios,
-  getUsuario,
-  createUsuario,
-  updateUsuario,
-  deleteUsuario,
-} = require("../controllers/usuario.controller");
+  getPlaces,
+  getPlace,
+  createPlace,
+  updatePlace,
+  deletePlace,
+} = require("../controllers/place.controller");
 
 const router = new Router();
 
 /**
  * @openapi
- * /api/usuarios/:
+ * /api/places/:
  *  get:
- *    summary: Obter usuários
+ *    summary: Obter places
  *    tags:
- *        - Usuario
+ *        - Place
  *    responses:
  *      200:
  *        description: OK
  */
-router.get("/", getUsuarios);
+router.get("/", getPlaces);
 
 /**
  * @openapi
- * /api/usuarios/{id}:
+ * /api/places/{id}:
  *  get:
  *    tags:
- *        - Usuario
+ *        - Place
  *    summary: obtener usuário por id
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Usuario Id
+ *        description: Place Id
  *        schema:
  *           type: integer
  *           default: 1
  *    responses:
  *      200:
- *        description: Usuário atualizado com sucesso
+ *        description: Place atualizado com sucesso
  *      406:
  *        description: Está faltando dados para concluir a operação
  */
-router.get("/:id", getUsuario);
+router.get("/:id", getPlace);
 /**
  * @openapi
- * /api/usuarios/:
+ * /api/places/:
  *  post:
  *    tags:
- *        - Usuario
- *    summary: Criar novo usuário
+ *        - Place
+ *    summary: Criar novo place
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/CriarUsuarioInput'
+ *            $ref: '#/components/schemas/CreatePlaceInput'
  *    responses:
  *      201:
- *        description: Usuário criado com sucesso
+ *        description: Place criado com sucesso
  *      406:
  *        description: Está faltando dados para concluir a operação
  */
-router.post("/", createUsuario);
+router.post("/", createPlace);
 
 /**
  * @openapi
- * /api/usuarios/{id}:
+ * /api/places/{id}:
  *  put:
  *    tags:
- *        - Usuario
- *    summary: Atualizar usuário
+ *        - Place
+ *    summary: Atualizar place
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Usuario Id
+ *        description: Place Id
  *        schema:
  *           type: integer
  *           default: 1
@@ -83,35 +83,35 @@ router.post("/", createUsuario);
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/CriarUsuarioInput'
+ *            $ref: '#/components/schemas/CreatePlaceInput'
  *    responses:
  *      200:
- *        description: Usuário atualizado com sucesso
+ *        description: Place atualizado com sucesso
  *      406:
  *        description: Está faltando dados para concluir a operação
  */
-router.put("/:id", updateUsuario);
+router.put("/:id", updatePlace);
 
 /**
  * @openapi
- * /api/usuarios/{id}:
+ * /api/places/{id}:
  *  delete:
  *    tags:
- *        - Usuario
- *    summary: Deletar usuário
+ *        - Place
+ *    summary: Deletar place
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Usuario Id
+ *        description: Place Id
  *        schema:
  *           type: integer
  *           default: 1
  *    responses:
  *      200:
- *        description: Usuário deletado com sucesso
+ *        description: Place deletado com sucesso
  *      406:
  *        description: Está faltando dados para concluir a operação
  */
-router.delete("/:id", deleteUsuario);
+router.delete("/:id", deletePlace);
 
 module.exports = router;

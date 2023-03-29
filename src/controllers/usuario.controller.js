@@ -29,7 +29,7 @@ const getUsuario = async (req = Request, res = Response) => {
   try {
     const usuario = await Usuario.findByPk(id);
     if (usuario) {
-      res.status(201).json({
+      res.status(200).json({
         message: "Usuário encontrado com sucesso",
         usuario,
       });
@@ -66,7 +66,7 @@ const updateUsuario = async (req = Request, res = Response) => {
     const usuarioUpdated = await Usuario.findByPk(id);
     if (usuarioUpdated) {
       await Usuario.update({ nome, email, senha }, { where: { id } });
-      res.status(201).json({
+      res.status(200).json({
         message: "Usuário atualizado com sucesso",
         usuario: usuarioUpdated,
       });
@@ -86,7 +86,7 @@ const deleteUsuario = async (req = Request, res = Response) => {
   try {
     const usuarioDeleted = await Usuario.destroy({ where: { id } });
     if (usuarioDeleted) {
-      res.status(201).json({
+      res.status(200).json({
         message: "Usuário deletado com sucesso",
       });
     } else {
