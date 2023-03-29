@@ -19,6 +19,8 @@ const router = new Router();
  *    responses:
  *      200:
  *        description: OK
+ *      404:
+ *        description: Places não encontrados
  */
 router.get("/", getPlaces);
 
@@ -28,21 +30,22 @@ router.get("/", getPlaces);
  *  get:
  *    tags:
  *        - Place
- *    summary: obtener usuário por id
+ *    summary: Obtener place por id
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Place Id
+ *        description: place Id
  *        schema:
  *           type: integer
  *           default: 1
  *    responses:
  *      200:
  *        description: Place atualizado com sucesso
- *      406:
- *        description: Está faltando dados para concluir a operação
+ *      404:
+ *        description: Place não encontrado
  */
 router.get("/:id", getPlace);
+
 /**
  * @openapi
  * /api/places/:
@@ -59,8 +62,8 @@ router.get("/:id", getPlace);
  *    responses:
  *      201:
  *        description: Place criado com sucesso
- *      406:
- *        description: Está faltando dados para concluir a operação
+ *      500:
+ *        description: Error ao criar o novo place
  */
 router.post("/", createPlace);
 
@@ -87,8 +90,10 @@ router.post("/", createPlace);
  *    responses:
  *      200:
  *        description: Place atualizado com sucesso
- *      406:
- *        description: Está faltando dados para concluir a operação
+ *      404:
+ *        description: Place não encontrado
+ *      500:
+ *        description: Error ao atualizar o place
  */
 router.put("/:id", updatePlace);
 
@@ -108,9 +113,11 @@ router.put("/:id", updatePlace);
  *           default: 1
  *    responses:
  *      200:
- *        description: Place deletado com sucesso
- *      406:
- *        description: Está faltando dados para concluir a operação
+ *        description: Place deletada com sucesso
+ *      404:
+ *        description: Place não encontrado
+ *      500:
+ *        description: Error ao deletar o place
  */
 router.delete("/:id", deletePlace);
 

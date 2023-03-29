@@ -19,6 +19,8 @@ const router = new Router();
  *    responses:
  *      200:
  *        description: OK
+ *      404:
+ *        description: Usuários não encontrados
  */
 router.get("/", getUsuarios);
 
@@ -39,8 +41,8 @@ router.get("/", getUsuarios);
  *    responses:
  *      200:
  *        description: Usuário atualizado com sucesso
- *      406:
- *        description: Está faltando dados para concluir a operação
+ *      404:
+ *        description: Usuário não encontrado
  */
 router.get("/:id", getUsuario);
 /**
@@ -59,8 +61,8 @@ router.get("/:id", getUsuario);
  *    responses:
  *      201:
  *        description: Usuário criado com sucesso
- *      406:
- *        description: Está faltando dados para concluir a operação
+ *      500:
+ *        description: Error ao criar o novo usuário
  */
 router.post("/", createUsuario);
 
@@ -87,8 +89,10 @@ router.post("/", createUsuario);
  *    responses:
  *      200:
  *        description: Usuário atualizado com sucesso
- *      406:
- *        description: Está faltando dados para concluir a operação
+ *      404:
+ *        description: Usuário não encontrado
+ *      500:
+ *        description: Error ao atualizar usuário
  */
 router.put("/:id", updateUsuario);
 
@@ -109,8 +113,10 @@ router.put("/:id", updateUsuario);
  *    responses:
  *      200:
  *        description: Usuário deletado com sucesso
- *      406:
- *        description: Está faltando dados para concluir a operação
+ *      404:
+ *        description: Usuário não encontrado
+ *      500:
+ *        description: Error ao deletar usuário
  */
 router.delete("/:id", deleteUsuario);
 

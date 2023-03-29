@@ -34,7 +34,7 @@ const getUsuario = async (req = Request, res = Response) => {
         usuario,
       });
     } else {
-      res.status(404).json({ mensaje: "usuário não encontrado" });
+      res.status(404).json({ mensaje: "Usuário não encontrado" });
     }
   } catch (error) {
     res.status(500).json({
@@ -53,7 +53,7 @@ const createUsuario = async (req = Request, res = Response) => {
       .json({ message: "Usuário criado com sucesso", usuario: usuarioCreated });
   } catch (error) {
     res.status(500).json({
-      message: "Error ao criar usuario",
+      message: "Error ao criar o novo usuário",
       error,
     });
   }
@@ -71,7 +71,7 @@ const updateUsuario = async (req = Request, res = Response) => {
         usuario: usuarioUpdated,
       });
     } else {
-      res.status(404).json({ mensaje: "usuário não encontrado" });
+      res.status(404).json({ mensaje: "Usuário não encontrado" });
     }
   } catch (error) {
     res.status(500).json({
@@ -90,7 +90,7 @@ const deleteUsuario = async (req = Request, res = Response) => {
         message: "Usuário deletado com sucesso",
       });
     } else {
-      res.status(404).json({ mensaje: "usuário não encontrado" });
+      res.status(404).json({ mensaje: "Usuário não encontrado" });
     }
   } catch (error) {
     res.status(500).json({
