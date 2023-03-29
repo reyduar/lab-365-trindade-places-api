@@ -3,12 +3,14 @@ const cors = require("cors");
 const { sequelize } = require("../database/config.db");
 const { swaggerDocs } = require("../utils/swagger");
 const usuarioRoute = require("../routes/usuario.route");
+const placeRoute = require("../routes/place.route");
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT || 3333;
     this.usuarioRoutePath = "/api/usuarios";
+    this.placeRoutePath = "/api/places";
 
     // Middlewares
     this.middlewares();
@@ -39,6 +41,7 @@ class Server {
   }
   routes() {
     this.app.use(`${this.usuarioRoutePath}`, usuarioRoute);
+    this.app.use(`${this.placeRoutePath}`, placeRoute);
   }
 
   listen() {
