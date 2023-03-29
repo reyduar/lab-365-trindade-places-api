@@ -28,7 +28,7 @@ const { sequelize } = require("../database/config.db");
  *          type: decimal
  *          default: -48.519006
  */
-const Place = sequelize.define(
+const place = sequelize.define(
   "places",
   {
     id: {
@@ -66,5 +66,5 @@ const Place = sequelize.define(
 );
 
 module.exports = {
-  Place,
+  place,
 };

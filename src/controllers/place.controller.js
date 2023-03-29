@@ -1,9 +1,9 @@
 const { request, response } = require("express");
-const { Place } = require("../models/Place");
+const { place } = require("../models/place");
 
 const getPlaces = async (req = request, res = response) => {
   try {
-    const places = await Place.findAll({ order: [["id", "DESC"]] });
+    const places = await place.findAll({ order: [["id", "DESC"]] });
     if (places) {
       res.status(200).json({
         places,
@@ -22,7 +22,7 @@ const getPlaces = async (req = request, res = response) => {
 const getPlace = async (req = Request, res = Response) => {
   const { id } = req.params;
   try {
-    const place = await Place.findByPk(id);
+    const place = await place.findByPk(id);
     if (place) {
       res.status(200).json({
         message: "Place encontrado com sucesso",
@@ -41,7 +41,7 @@ const getPlace = async (req = Request, res = Response) => {
 
 const createPlace = async (req = Request, res = Response) => {
   try {
-    const placeCreated = await Place.create({ ...req.body });
+    const placeCreated = await place.create({ ...req.body });
     res
       .status(201)
       .json({ message: "Place criado com sucesso", place: placeCreated });
@@ -56,7 +56,7 @@ const createPlace = async (req = Request, res = Response) => {
 const updatePlace = async (req = Request, res = Response) => {
   const { id } = req.params;
   try {
-    const placeUpdated = await Place.findByPk(id);
+    const placeUpdated = await place.findByPk(id);
     if (placeUpdated) {
       await Place.update({ ...req.body }, { where: { id } });
       res.status(200).json({
@@ -77,7 +77,7 @@ const updatePlace = async (req = Request, res = Response) => {
 const deletePlace = async (req = Request, res = Response) => {
   const { id } = req.params;
   try {
-    const placeDeleted = await Place.destroy({ where: { id } });
+    const placeDeleted = await place.destroy({ where: { id } });
     if (placeDeleted) {
       res.status(200).json({
         message: "Place deletado com sucesso",
