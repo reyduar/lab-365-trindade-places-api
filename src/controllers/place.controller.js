@@ -1,7 +1,7 @@
 const { request, response } = require("express");
 const { Place } = require("../models/place");
 
-const getPlaces = async (req = request, res = response) => {
+const getPlaces = async (_, res = response) => {
   try {
     const places = await Place.findAll({ order: [["id", "DESC"]] });
     if (places) {
@@ -19,7 +19,7 @@ const getPlaces = async (req = request, res = response) => {
   }
 };
 
-const getPlace = async (req = Request, res = Response) => {
+const getPlace = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const place = await Place.findByPk(id);
@@ -39,7 +39,7 @@ const getPlace = async (req = Request, res = Response) => {
   }
 };
 
-const createPlace = async (req = Request, res = Response) => {
+const createPlace = async (req = request, res = response) => {
   try {
     const placeCreated = await Place.create({ ...req.body });
     res
@@ -53,7 +53,7 @@ const createPlace = async (req = Request, res = Response) => {
   }
 };
 
-const updatePlace = async (req = Request, res = Response) => {
+const updatePlace = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const placeUpdated = await Place.findByPk(id);
@@ -74,7 +74,7 @@ const updatePlace = async (req = Request, res = Response) => {
   }
 };
 
-const deletePlace = async (req = Request, res = Response) => {
+const deletePlace = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const placeDeleted = await Place.destroy({ where: { id } });

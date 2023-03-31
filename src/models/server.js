@@ -41,7 +41,7 @@ class Server {
   }
   routes() {
     this.app.use(`${this.usuarioRoutePath}`, usuarioRoute);
-    this.app.use(`${this.placeRoutePath}`, placeRoute);
+    this.app.use(this.placeRoutePath, placeRoute);
   }
 
   listen() {
