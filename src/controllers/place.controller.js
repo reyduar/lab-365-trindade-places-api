@@ -61,7 +61,7 @@ const updatePlace = async (req = request, res = response) => {
       await Place.update({ ...req.body }, { where: { id } });
       res.status(200).json({
         message: "Place atualizado com sucesso",
-        usuario: { ...req.body },
+        place: { ...req.body },
       });
     } else {
       res.status(404).json({ mensaje: "Place não encontrado" });
