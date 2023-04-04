@@ -4,31 +4,35 @@ const { sequelize } = require("../database/config.db");
  * @openapi
  * components:
  *  schemas:
- *    CriarUsuarioInput:
+ *    CreateUserInput:
  *      type: object
  *      required: true
- *        - nome
- *        - senha
+ *        - name
+ *        - username
+ *        - password
  *      properties:
- *        nome:
+ *        name:
  *          type: string
  *          default: Nikola Tesla
  *        email:
  *          type: string
  *          default: tesla@tesla.com
- *        senha:
+ *        username:
+ *          type: string
+ *          default: tesla
+ *        password:
  *          type: string
  *          default: 12345678
  */
-const Usuario = sequelize.define(
-  "usuarios",
+const User = sequelize.define(
+  "users",
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
-    nome: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -37,7 +41,12 @@ const Usuario = sequelize.define(
       allowNull: false,
       unique: true,
     },
-    senha: {
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: false,
@@ -47,5 +56,5 @@ const Usuario = sequelize.define(
 );
 
 module.exports = {
-  Usuario,
+  User,
 };

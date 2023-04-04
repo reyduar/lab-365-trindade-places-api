@@ -1,5 +1,7 @@
 const { request, response } = require("express");
 const { Place } = require("../models/place");
+const PlaceUpdateDTO = require("../dtos/place-update.dto");
+const PlaceCreateDTO = require("../dtos/place-create.dto");
 
 const getPlaces = async (_, res = response) => {
   try {
@@ -41,10 +43,11 @@ const getPlace = async (req = request, res = response) => {
 
 const createPlace = async (req = request, res = response) => {
   try {
-    const placeCreated = await Place.create({ ...req.body });
+    const placeCreateDto = new PlaceCreateDTO(req.body);
+    await Place.create({ ...placeCreateDto });
     res
       .status(201)
-      .json({ message: "Place criado com sucesso", place: placeCreated });
+      .json({ message: "Place criado com sucesso", place: placeCreateDto });
   } catch (error) {
     res.status(500).json({
       message: "Error ao criar o novo place",
@@ -58,10 +61,11 @@ const updatePlace = async (req = request, res = response) => {
   try {
     const placeUpdated = await Place.findByPk(id);
     if (placeUpdated) {
-      await Place.update({ ...req.body }, { where: { id } });
+      const placeDto = new PlaceUpdateDTO(req.body);
+      await Place.update({ ...placeDto }, { where: { id } });
       res.status(200).json({
         message: "Place atualizado com sucesso",
-        place: { ...req.body },
+        place: placeDto,
       });
     } else {
       res.status(404).json({ mensaje: "Place não encontrado" });
