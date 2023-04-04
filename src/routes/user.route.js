@@ -1,40 +1,41 @@
 const { Router } = require("express");
 const {
-  getUsuarios,
-  getUsuario,
-  createUsuario,
-  updateUsuario,
-  deleteUsuario,
-} = require("../controllers/usuario.controller");
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require("../controllers/user.controller");
+const { validUserPassword } = require("../middlewares/valid-user-password");
 
 const router = new Router();
 
 /**
  * @openapi
- * /api/usuarios/:
+ * /api/users/:
  *  get:
  *    summary: Obter usuários
  *    tags:
- *        - Usuario
+ *        - User
  *    responses:
  *      200:
  *        description: OK
  *      404:
  *        description: Usuários não encontrados
  */
-router.get("/", getUsuarios);
+router.get("/", getUsers);
 
 /**
  * @openapi
- * /api/usuarios/{id}:
+ * /api/users/{id}:
  *  get:
  *    tags:
- *        - Usuario
+ *        - User
  *    summary: obtener usuário por id
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Usuario Id
+ *        description: User Id
  *        schema:
  *           type: integer
  *           default: 1
@@ -44,39 +45,39 @@ router.get("/", getUsuarios);
  *      404:
  *        description: Usuário não encontrado
  */
-router.get("/:id", getUsuario);
+router.get("/:id", getUser);
 /**
  * @openapi
- * /api/usuarios/:
+ * /api/users/:
  *  post:
  *    tags:
- *        - Usuario
+ *        - User
  *    summary: Criar novo usuário
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/CriarUsuarioInput'
+ *            $ref: '#/components/schemas/CreateUserInput'
  *    responses:
  *      201:
  *        description: Usuário criado com sucesso
  *      500:
- *        description: Error ao criar o novo usuário
+ *        description: Error ao Create o novo usuário
  */
-router.post("/", createUsuario);
+router.post("/", validUserPassword, createUser);
 
 /**
  * @openapi
- * /api/usuarios/{id}:
+ * /api/users/{id}:
  *  put:
  *    tags:
- *        - Usuario
+ *        - User
  *    summary: Atualizar usuário
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Usuario Id
+ *        description: User Id
  *        schema:
  *           type: integer
  *           default: 1
@@ -85,7 +86,7 @@ router.post("/", createUsuario);
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/CriarUsuarioInput'
+ *            $ref: '#/components/schemas/CreateUserInput'
  *    responses:
  *      200:
  *        description: Usuário atualizado com sucesso
@@ -94,19 +95,19 @@ router.post("/", createUsuario);
  *      500:
  *        description: Error ao atualizar usuário
  */
-router.put("/:id", updateUsuario);
+router.put("/:id", validUserPassword, updateUser);
 
 /**
  * @openapi
- * /api/usuarios/{id}:
+ * /api/users/{id}:
  *  delete:
  *    tags:
- *        - Usuario
+ *        - User
  *    summary: Deletar usuário
  *    parameters:
  *      - name: id
  *        in: path
- *        description: Usuario Id
+ *        description: User Id
  *        schema:
  *           type: integer
  *           default: 1
@@ -118,6 +119,6 @@ router.put("/:id", updateUsuario);
  *      500:
  *        description: Error ao deletar usuário
  */
-router.delete("/:id", deleteUsuario);
+router.delete("/:id", deleteUser);
 
 module.exports = router;

@@ -6,6 +6,9 @@ const {
   updatePlace,
   deletePlace,
 } = require("../controllers/place.controller");
+// const { check } = require("express-validator");
+// const { validarCampos } = require("../middlewares/res-express-validator");
+const { validPlaceIdParam } = require("../middlewares/validar-place-id");
 
 const router = new Router();
 
@@ -119,6 +122,9 @@ router.put("/:id", updatePlace);
  *      500:
  *        description: Error ao deletar o place
  */
+
 router.delete("/:id", deletePlace);
+
+router.all("*", validPlaceIdParam);
 
 module.exports = router;

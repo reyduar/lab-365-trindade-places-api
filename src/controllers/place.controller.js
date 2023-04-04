@@ -1,7 +1,9 @@
 const { request, response } = require("express");
 const { Place } = require("../models/place");
+const PlaceUpdateDTO = require("../dtos/place-update.dto");
+const PlaceCreateDTO = require("../dtos/place-create.dto");
 
-const getPlaces = async (req = request, res = response) => {
+const getPlaces = async (_, res = response) => {
   try {
     const places = await Place.findAll({ order: [["id", "DESC"]] });
     if (places) {
@@ -19,7 +21,7 @@ const getPlaces = async (req = request, res = response) => {
   }
 };
 
-const getPlace = async (req = Request, res = Response) => {
+const getPlace = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const place = await Place.findByPk(id);
@@ -39,12 +41,13 @@ const getPlace = async (req = Request, res = Response) => {
   }
 };
 
-const createPlace = async (req = Request, res = Response) => {
+const createPlace = async (req = request, res = response) => {
   try {
-    const placeCreated = await Place.create({ ...req.body });
+    const placeCreateDto = new PlaceCreateDTO(req.body);
+    await Place.create({ ...placeCreateDto });
     res
       .status(201)
-      .json({ message: "Place criado com sucesso", place: placeCreated });
+      .json({ message: "Place criado com sucesso", place: placeCreateDto });
   } catch (error) {
     res.status(500).json({
       message: "Error ao criar o novo place",
@@ -53,15 +56,16 @@ const createPlace = async (req = Request, res = Response) => {
   }
 };
 
-const updatePlace = async (req = Request, res = Response) => {
+const updatePlace = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const placeUpdated = await Place.findByPk(id);
     if (placeUpdated) {
-      await Place.update({ ...req.body }, { where: { id } });
+      const placeDto = new PlaceUpdateDTO(req.body);
+      await Place.update({ ...placeDto }, { where: { id } });
       res.status(200).json({
         message: "Place atualizado com sucesso",
-        usuario: { ...req.body },
+        place: placeDto,
       });
     } else {
       res.status(404).json({ mensaje: "Place não encontrado" });
@@ -74,7 +78,7 @@ const updatePlace = async (req = Request, res = Response) => {
   }
 };
 
-const deletePlace = async (req = Request, res = Response) => {
+const deletePlace = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const placeDeleted = await Place.destroy({ where: { id } });

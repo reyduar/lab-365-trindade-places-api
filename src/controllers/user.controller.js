@@ -1,17 +1,19 @@
 const { request, response } = require("express");
-const { Usuario } = require("../models/usuario");
+const { User } = require("../models/user");
+const UserCreateDTO = require("../dtos/user-create.dto");
+const UserUpdateDTO = require("../dtos/user-update.dto");
 
-const getUsuarios = async (req = request, res = response) => {
+const getUsers = async (_, res = response) => {
   try {
-    const usuarios = await Usuario.findAll({
+    const users = await User.findAll({
       // where: {
       //   age: { [Op.gte]: 18 } // exemplo pra fazer where
       // },
       order: [["id", "DESC"]],
     });
-    if (usuarios) {
+    if (users) {
       res.status(200).json({
-        usuarios,
+        users,
       });
     } else {
       res.status(404).json({ mensaje: "Usuários não encontrados" });
@@ -24,14 +26,14 @@ const getUsuarios = async (req = request, res = response) => {
   }
 };
 
-const getUsuario = async (req = Request, res = Response) => {
+const getUser = async (req = Request, res = Response) => {
   const { id } = req.params;
   try {
-    const usuario = await Usuario.findByPk(id);
-    if (usuario) {
+    const user = await User.findByPk(id);
+    if (user) {
       res.status(200).json({
         message: "Usuário encontrado com sucesso",
-        usuario,
+        user,
       });
     } else {
       res.status(404).json({ mensaje: "Usuário não encontrado" });
@@ -44,13 +46,13 @@ const getUsuario = async (req = Request, res = Response) => {
   }
 };
 
-const createUsuario = async (req = Request, res = Response) => {
-  const { nome, email, senha } = req.body;
+const createUser = async (req = Request, res = Response) => {
   try {
-    const usuarioCreated = await Usuario.create({ nome, email, senha });
+    const userCreateDTO = new UserCreateDTO(req.body);
+    await User.create({ ...userCreateDTO });
     res
       .status(201)
-      .json({ message: "Usuário criado com sucesso", usuario: usuarioCreated });
+      .json({ message: "Usuário criado com sucesso", user: userCreateDTO });
   } catch (error) {
     res.status(500).json({
       message: "Error ao criar o novo usuário",
@@ -59,16 +61,16 @@ const createUsuario = async (req = Request, res = Response) => {
   }
 };
 
-const updateUsuario = async (req = Request, res = Response) => {
+const updateUser = async (req = Request, res = Response) => {
   const { id } = req.params;
-  const { nome, email, senha } = req.body;
   try {
-    const usuarioUpdated = await Usuario.findByPk(id);
-    if (usuarioUpdated) {
-      await Usuario.update({ nome, email, senha }, { where: { id } });
+    const user = await User.findByPk(id);
+    if (user) {
+      const userUpdateDTO = new UserUpdateDTO(req.body);
+      await User.update({ ...userUpdateDTO }, { where: { id } });
       res.status(200).json({
         message: "Usuário atualizado com sucesso",
-        usuario: usuarioUpdated,
+        user: userUpdateDTO,
       });
     } else {
       res.status(404).json({ mensaje: "Usuário não encontrado" });
@@ -81,11 +83,11 @@ const updateUsuario = async (req = Request, res = Response) => {
   }
 };
 
-const deleteUsuario = async (req = Request, res = Response) => {
+const deleteUser = async (req = Request, res = Response) => {
   const { id } = req.params;
   try {
-    const usuarioDeleted = await Usuario.destroy({ where: { id } });
-    if (usuarioDeleted) {
+    const user = await User.destroy({ where: { id } });
+    if (user) {
       res.status(200).json({
         message: "Usuário deletado com sucesso",
       });
@@ -101,9 +103,9 @@ const deleteUsuario = async (req = Request, res = Response) => {
 };
 
 module.exports = {
-  getUsuarios,
-  getUsuario,
-  createUsuario,
-  updateUsuario,
-  deleteUsuario,
+  getUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
 };
