@@ -6,9 +6,7 @@ const UserUpdateDTO = require("../dtos/user-update.dto");
 const getUsers = async (_, res = response) => {
   try {
     const users = await User.findAll({
-      // where: {
-      //   age: { [Op.gte]: 18 } // exemplo pra fazer where
-      // },
+      attributes: { exclude: ["password"] },
       order: [["id", "DESC"]],
     });
     if (users) {
@@ -26,7 +24,7 @@ const getUsers = async (_, res = response) => {
   }
 };
 
-const getUser = async (req = Request, res = Response) => {
+const getUser = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id);
@@ -46,7 +44,7 @@ const getUser = async (req = Request, res = Response) => {
   }
 };
 
-const createUser = async (req = Request, res = Response) => {
+const createUser = async (req = request, res = response) => {
   try {
     const userCreateDTO = new UserCreateDTO(req.body);
     await User.create({ ...userCreateDTO });
@@ -61,7 +59,7 @@ const createUser = async (req = Request, res = Response) => {
   }
 };
 
-const updateUser = async (req = Request, res = Response) => {
+const updateUser = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id);
@@ -83,7 +81,7 @@ const updateUser = async (req = Request, res = Response) => {
   }
 };
 
-const deleteUser = async (req = Request, res = Response) => {
+const deleteUser = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const user = await User.destroy({ where: { id } });
