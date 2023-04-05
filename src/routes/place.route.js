@@ -6,6 +6,7 @@ const {
   updatePlace,
   deletePlace,
 } = require("../controllers/place.controller");
+const { validJWT } = require("../middlewares/valid-jwt");
 // const { check } = require("express-validator");
 // const { validarCampos } = require("../middlewares/res-express-validator");
 const { validPlaceIdParam } = require("../middlewares/validar-place-id");
@@ -25,7 +26,7 @@ const router = new Router();
  *      404:
  *        description: Places não encontrados
  */
-router.get("/", getPlaces);
+router.get("/", validJWT, getPlaces);
 
 /**
  * @openapi
@@ -47,7 +48,7 @@ router.get("/", getPlaces);
  *      404:
  *        description: Place não encontrado
  */
-router.get("/:id", getPlace);
+router.get("/:id", validJWT, getPlace);
 
 /**
  * @openapi
@@ -68,7 +69,7 @@ router.get("/:id", getPlace);
  *      500:
  *        description: Error ao criar o novo place
  */
-router.post("/", createPlace);
+router.post("/", validJWT, createPlace);
 
 /**
  * @openapi
@@ -98,7 +99,7 @@ router.post("/", createPlace);
  *      500:
  *        description: Error ao atualizar o place
  */
-router.put("/:id", updatePlace);
+router.put("/:id", validJWT, updatePlace);
 
 /**
  * @openapi
@@ -123,8 +124,8 @@ router.put("/:id", updatePlace);
  *        description: Error ao deletar o place
  */
 
-router.delete("/:id", deletePlace);
+router.delete("/:id", validJWT, deletePlace);
 
-router.all("*", validPlaceIdParam);
+router.all("*", validJWT, validPlaceIdParam);
 
 module.exports = router;

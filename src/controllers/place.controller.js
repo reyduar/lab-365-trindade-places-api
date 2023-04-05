@@ -15,7 +15,7 @@ const getPlaces = async (_, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao procurar places",
+      message: "Erro ao procurar places",
       error,
     });
   }
@@ -35,7 +35,7 @@ const getPlace = async (req = request, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao atualizar place",
+      message: "Erro ao atualizar place",
       error,
     });
   }
@@ -50,7 +50,7 @@ const createPlace = async (req = request, res = response) => {
       .json({ message: "Place criado com sucesso", place: placeCreateDto });
   } catch (error) {
     res.status(500).json({
-      message: "Error ao criar o novo place",
+      message: "Erro ao criar o novo place",
       error,
     });
   }
@@ -72,7 +72,7 @@ const updatePlace = async (req = request, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao atualizar o place",
+      message: "Erro ao atualizar o place",
       error,
     });
   }
@@ -91,7 +91,7 @@ const deletePlace = async (req = request, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao deletar Place",
+      message: "Erro ao deletar Place",
       error,
     });
   }

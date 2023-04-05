@@ -1,7 +1,7 @@
 const { SALT } = process.env;
-function getSalt() {
+const getSalt = () => {
   return parseInt(SALT);
-}
+};
 
 module.exports = {
   getSalt,

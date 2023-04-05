@@ -6,6 +6,7 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/user.controller");
+const { validJWT } = require("../middlewares/valid-jwt");
 const { validUserPassword } = require("../middlewares/valid-user-password");
 
 const router = new Router();
@@ -23,7 +24,7 @@ const router = new Router();
  *      404:
  *        description: Usuários não encontrados
  */
-router.get("/", getUsers);
+router.get("/", validJWT, getUsers);
 
 /**
  * @openapi
@@ -45,7 +46,7 @@ router.get("/", getUsers);
  *      404:
  *        description: Usuário não encontrado
  */
-router.get("/:id", getUser);
+router.get("/:id", validJWT, getUser);
 /**
  * @openapi
  * /api/users/:
@@ -65,7 +66,7 @@ router.get("/:id", getUser);
  *      500:
  *        description: Error ao Create o novo usuário
  */
-router.post("/", validUserPassword, createUser);
+router.post("/", [validJWT, validUserPassword], createUser);
 
 /**
  * @openapi
@@ -95,7 +96,7 @@ router.post("/", validUserPassword, createUser);
  *      500:
  *        description: Error ao atualizar usuário
  */
-router.put("/:id", validUserPassword, updateUser);
+router.put("/:id", [validJWT, validUserPassword], updateUser);
 
 /**
  * @openapi
@@ -119,6 +120,6 @@ router.put("/:id", validUserPassword, updateUser);
  *      500:
  *        description: Error ao deletar usuário
  */
-router.delete("/:id", deleteUser);
+router.delete("/:id", validJWT, deleteUser);
 
 module.exports = router;

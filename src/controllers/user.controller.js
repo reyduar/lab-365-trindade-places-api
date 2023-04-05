@@ -18,7 +18,7 @@ const getUsers = async (_, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao procurar usuários",
+      message: "Erro ao procurar usuários",
       error,
     });
   }
@@ -27,7 +27,12 @@ const getUsers = async (_, res = response) => {
 const getUser = async (req = request, res = response) => {
   const { id } = req.params;
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findOne({
+      attributes: { exclude: ["password"] },
+      where: {
+        id,
+      },
+    });
     if (user) {
       res.status(200).json({
         message: "Usuário encontrado com sucesso",
@@ -38,7 +43,7 @@ const getUser = async (req = request, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao atualizar usuário",
+      message: "Erro ao atualizar usuário",
       error,
     });
   }
@@ -53,7 +58,7 @@ const createUser = async (req = request, res = response) => {
       .json({ message: "Usuário criado com sucesso", user: userCreateDTO });
   } catch (error) {
     res.status(500).json({
-      message: "Error ao criar o novo usuário",
+      message: "Erro ao criar o novo usuário",
       error,
     });
   }
@@ -75,7 +80,7 @@ const updateUser = async (req = request, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao atualizar usuário",
+      message: "Erro ao atualizar usuário",
       error,
     });
   }
@@ -94,7 +99,7 @@ const deleteUser = async (req = request, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao deletar usuário",
+      message: "Erro ao deletar usuário",
       error,
     });
   }

@@ -6,7 +6,11 @@ class UserUpdateDTO {
     this.name = name;
     this.email = email;
     this.username = username;
-    this.password = bcrypt.hashSync(password, getSalt());
+    this.password = password ? this.encryptPassword(password) : null;
+  }
+
+  encryptPassword(password) {
+    return bcrypt.hashSync(password, getSalt());
   }
 }
 
