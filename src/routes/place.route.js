@@ -10,7 +10,12 @@ const { validJWT } = require("../middlewares/valid-jwt");
 // const { check } = require("express-validator");
 // const { validarCampos } = require("../middlewares/res-express-validator");
 const { validPlaceIdParam } = require("../middlewares/validar-place-id");
-
+const {
+  validPlaceJsonCreate,
+} = require("../middlewares/valid-place-json-create");
+const {
+  validPlaceJsonUpdate,
+} = require("../middlewares/valid-place-json-update");
 const router = new Router();
 
 /**
@@ -69,7 +74,7 @@ router.get("/:id", validJWT, getPlace);
  *      500:
  *        description: Error ao criar o novo place
  */
-router.post("/", validJWT, createPlace);
+router.post("/", [validJWT, validPlaceJsonCreate], createPlace);
 
 /**
  * @openapi
@@ -99,7 +104,7 @@ router.post("/", validJWT, createPlace);
  *      500:
  *        description: Error ao atualizar o place
  */
-router.put("/:id", validJWT, updatePlace);
+router.put("/:id", [validJWT, validPlaceJsonUpdate], updatePlace);
 
 /**
  * @openapi

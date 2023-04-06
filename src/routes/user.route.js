@@ -8,6 +8,12 @@ const {
 } = require("../controllers/user.controller");
 const { validJWT } = require("../middlewares/valid-jwt");
 const { validUserPassword } = require("../middlewares/valid-user-password");
+const {
+  validUserJsonCreate,
+} = require("../middlewares/valid-user-json-create");
+const {
+  validUserJsonUpdate,
+} = require("../middlewares/valid-user-json-update");
 
 const router = new Router();
 
@@ -66,7 +72,11 @@ router.get("/:id", validJWT, getUser);
  *      500:
  *        description: Error ao Create o novo usuário
  */
-router.post("/", [validJWT, validUserPassword], createUser);
+router.post(
+  "/",
+  [validJWT, validUserPassword, validUserJsonCreate],
+  createUser
+);
 
 /**
  * @openapi
@@ -96,7 +106,11 @@ router.post("/", [validJWT, validUserPassword], createUser);
  *      500:
  *        description: Error ao atualizar usuário
  */
-router.put("/:id", [validJWT, validUserPassword], updateUser);
+router.put(
+  "/:id",
+  [validJWT, validUserPassword, validUserJsonUpdate],
+  updateUser
+);
 
 /**
  * @openapi

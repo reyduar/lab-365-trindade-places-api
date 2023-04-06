@@ -22,8 +22,9 @@ const userLogin = async (req = request, res = response) => {
       });
     }
 
+    // expiresIn: ["1d", "30d"]
     const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: process.env.TOKEN_LIFE,
     });
 
     res.status(200).json({

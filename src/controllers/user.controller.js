@@ -52,10 +52,9 @@ const getUser = async (req = request, res = response) => {
 const createUser = async (req = request, res = response) => {
   try {
     const userCreateDTO = new UserCreateDTO(req.body);
-    await User.create({ ...userCreateDTO });
-    res
-      .status(201)
-      .json({ message: "Usuário criado com sucesso", user: userCreateDTO });
+    const userCreated = await User.create({ ...userCreateDTO });
+    const { password, ...rest } = userCreated.dataValues;
+    res.status(201).json({ message: "Usuário criado com sucesso", user: rest });
   } catch (error) {
     res.status(500).json({
       message: "Erro ao criar o novo usuário",
@@ -70,10 +69,13 @@ const updateUser = async (req = request, res = response) => {
     const user = await User.findByPk(id);
     if (user) {
       const userUpdateDTO = new UserUpdateDTO(req.body);
-      await User.update({ ...userUpdateDTO }, { where: { id } });
+      const userUpdated = await User.update(
+        { ...userUpdateDTO },
+        { where: { id } }
+      );
       res.status(200).json({
         message: "Usuário atualizado com sucesso",
-        user: userUpdateDTO,
+        user: userUpdated,
       });
     } else {
       res.status(404).json({ mensaje: "Usuário não encontrado" });
