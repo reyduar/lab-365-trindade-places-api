@@ -3,9 +3,12 @@ const { Place } = require("../models/place");
 const PlaceUpdateDTO = require("../dtos/place-update.dto");
 const PlaceCreateDTO = require("../dtos/place-create.dto");
 
-const getPlaces = async (_, res = response) => {
+const getPlaces = async (req = request, res = response) => {
   try {
-    const places = await Place.findAll({ order: [["id", "DESC"]] });
+    const places = await Place.findAll({
+      where: { userId: req.body.userId },
+      order: [["id", "DESC"]],
+    });
     if (places) {
       res.status(200).json({
         places,

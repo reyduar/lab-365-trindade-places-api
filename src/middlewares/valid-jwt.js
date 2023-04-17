@@ -27,13 +27,13 @@ const validJWT = async (req = request, res = response, next) => {
         });
       }
     } else {
-      req.user = decoded;
       // Check if user has not deleted
       const user = await User.findByPk(decoded.id);
       if (!user) {
         return res.status(404).json({ message: "Usuário não existe" });
       }
-      next();
+      req.body.userId = decoded.id;
+      return next();
     }
   });
 };
