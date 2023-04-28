@@ -10,15 +10,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
-    "start:dev": "nodemon src/app.js",
-    "vercel-build": "node ./build.js"
+    "start:dev": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+github.com/reyduar/lab-365-fullstack-node-api.git"
   },
   "devDependencies": {
-    "@vercel/node": "^2.13.0",
     "jest": "^29.5.0"
   },
   "dependencies": {
