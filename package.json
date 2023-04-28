@@ -4,16 +4,21 @@
   "description": "Trinidade places e uma REST full API feita para o curso full-stack dev de lab-365",
   "author": "Reynaldo Ariel Duarte",
   "main": "app.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
-    "start:dev": "nodemon src/app.js"
+    "start:dev": "nodemon src/app.js",
+    "vercel-build": "node ./build.js"
   },
   "repository": {
     "type": "git",
     "url": "git+github.com/reyduar/lab-365-fullstack-node-api.git"
   },
   "devDependencies": {
+    "@vercel/node": "^2.13.0",
     "jest": "^29.5.0"
   },
   "dependencies": {
