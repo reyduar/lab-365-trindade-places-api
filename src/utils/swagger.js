@@ -15,6 +15,13 @@ const options = {
         <h4><a target="_blank" href="https://github.com/reyduar/lab-365-trindade-places-api">API Repository</a></h4>
         `,
     },
+    // components: {
+    //   securitySchemas: {
+    //     bearerAuth: {
+    //       type: "t",
+    //     },
+    //   },
+    // },
   },
   servers: [
     {

@@ -6,9 +6,7 @@ const UserUpdateDTO = require("../dtos/user-update.dto");
 const getUsers = async (_, res = response) => {
   try {
     const users = await User.findAll({
-      // where: {
-      //   age: { [Op.gte]: 18 } // exemplo pra fazer where
-      // },
+      attributes: { exclude: ["password"] },
       order: [["id", "DESC"]],
     });
     if (users) {
@@ -20,16 +18,21 @@ const getUsers = async (_, res = response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao procurar usuários",
+      message: "Erro ao procurar usuários",
       error,
     });
   }
 };
 
-const getUser = async (req = Request, res = Response) => {
+const getUser = async (req = request, res = response) => {
   const { id } = req.params;
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findOne({
+      attributes: { exclude: ["password"] },
+      where: {
+        id,
+      },
+    });
     if (user) {
       res.status(200).json({
         message: "Usuário encontrado com sucesso",
@@ -40,50 +43,52 @@ const getUser = async (req = Request, res = Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao atualizar usuário",
+      message: "Erro ao atualizar usuário",
       error,
     });
   }
 };
 
-const createUser = async (req = Request, res = Response) => {
+const createUser = async (req = request, res = response) => {
   try {
     const userCreateDTO = new UserCreateDTO(req.body);
-    await User.create({ ...userCreateDTO });
-    res
-      .status(201)
-      .json({ message: "Usuário criado com sucesso", user: userCreateDTO });
+    const userCreated = await User.create({ ...userCreateDTO });
+    const { password, ...rest } = userCreated.dataValues;
+    res.status(201).json({ message: "Usuário criado com sucesso", user: rest });
   } catch (error) {
     res.status(500).json({
-      message: "Error ao criar o novo usuário",
+      message: "Erro ao criar o novo usuário",
       error,
     });
   }
 };
 
-const updateUser = async (req = Request, res = Response) => {
+const updateUser = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id);
     if (user) {
       const userUpdateDTO = new UserUpdateDTO(req.body);
-      await User.update({ ...userUpdateDTO }, { where: { id } });
+      const userUpdated = await User.update(
+        { ...userUpdateDTO },
+        { where: { id } }
+      );
       res.status(200).json({
         message: "Usuário atualizado com sucesso",
-        user: userUpdateDTO,
+        user: userUpdated,
       });
     } else {
       res.status(404).json({ mensaje: "Usuário não encontrado" });
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao atualizar usuário",
+      message: "Erro ao atualizar usuário",
       error,
     });
   }
 };
 
-const deleteUser = async (req = Request, res = Response) => {
+const deleteUser = async (req = request, res = response) => {
   const { id } = req.params;
   try {
     const user = await User.destroy({ where: { id } });
@@ -96,7 +101,7 @@ const deleteUser = async (req = Request, res = Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error ao deletar usuário",
+      message: "Erro ao deletar usuário",
       error,
     });
   }

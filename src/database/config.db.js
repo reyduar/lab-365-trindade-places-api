@@ -13,6 +13,6 @@ module.exports = {
 };
 
 // Sincroniza la base de datos
-sequelize.sync().then(() => {
+sequelize.sync({ alter: true }).then(() => {
   console.log("Banco de dados sincronizado..");
 });

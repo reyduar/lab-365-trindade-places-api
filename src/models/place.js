@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../database/config.db");
+const { User } = require("./user");
 /**
  * @openapi
  * components:
@@ -60,6 +61,14 @@ const Place = sequelize.define(
     longitude: {
       type: DataTypes.DECIMAL(11, 8),
       allowNull: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: "id",
+      },
+      name: "fk_user_place",
     },
   },
   { timestamps: false }
